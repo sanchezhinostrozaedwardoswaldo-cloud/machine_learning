@@ -33,7 +33,14 @@ modelo.fit(x_train, y_train)
 # 6.Ponemos a prueba el modelo
 y_pred = modelo.predict(x_test)
 
-# Provamos con otros datos 
+# 7.Evaluamos que tan bueno es
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f"---RESULTADO SKLEARN---")
+print(f"MSE (Error Medio): {mse:.2f}")
+print(f"R2 (Precisiòn): {r2:.2f}")
+
 nueva_casa = pd.DataFrame([{
     "edad": 10,
     "distancia_mrt": 500,
@@ -44,36 +51,9 @@ nueva_casa = pd.DataFrame([{
 
 precio_predicho = modelo.predict(nueva_casa)
 
-print(f"Precio estimado de la casa: {precio_predicho[0]:.2f}")
+print(f"\nPrecio estimado de la casa: {precio_predicho[0]:.2f}")
 
-# 7.Evaluamos que tan bueno es
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-print(f"---RESULTADO SKLEARN---")
-print(f"MSE (Error Medio): {mse:.2f}")
-print(f"R2 (Precisiòn): {r2:.2f}")
-
-# 8.Evaluamos la importancia de las variables
-coeficientes = pd.DataFrame({
-    "Variable": columnas_x,
-    "Coeficiente": modelo.coef_
-})
-
-print("\nInfluencia de cada variable en el precio:")
-print(coeficientes)
-
-# 9.Guardamos las predicciones para comparar con los reales
-resultados = pd.DataFrame({
-    "real": y_test,
-    "predicho": y_pred
-})
-
-print("\nReal vs Predicho")
-print(resultados.head())
-
-
-# 10.Realizamos una grafica real vs predicho
+"""# 10.Realizamos una grafica real vs predicho
 plt.figure(figsize=(8,6))
 # Puntos de predicción
 plt.scatter(y_test, y_pred, alpha=0.7)
@@ -88,11 +68,11 @@ plt.plot(
 plt.xlabel("Precio real")
 plt.ylabel("Precio predicho")
 # Título
-plt.title("Comparación entre precio real y precio predicho Skelearn")
+plt.title("Comparación entre precio real y precio predicho Sklearn")
 # Cuadrícula
 plt.grid(True)
 # Guardar gráfica
 plt.savefig("grafica_real_vs_predicho.png")
 print("Gráfica guardada como 'grafica_real_vs_predicho.png'")
 # Mostrar gráfica
-plt.show()
+plt.show()"""

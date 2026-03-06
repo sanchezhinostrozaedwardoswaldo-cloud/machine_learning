@@ -99,8 +99,35 @@ real = scaler_y.inverse_transform(y_test.numpy())
 mse = mean_squared_error(real,pred_real)
 r2 = r2_score(real,pred_real)
 
-print("MSE:",mse)
-print("R2:",r2)
+print(f"---RESULTADO PYTORCH---")
+print(f"MSE (Error Medio): {mse:.2f}")
+print(f"R2 (Precisiòn): {r2:.2f}")
+
+# Datos de una nueva vivienda
+nueva_casa = pd.DataFrame([{
+    "edad": 10,
+    "distancia_mrt": 500,
+    "tiendas": 8,
+    "lat": 24.97,
+    "long": 121.54
+}])
+
+# Escalamos usando el mismo scaler del entrenamiento
+nueva_casa_scaled = scaler_x.transform(nueva_casa)
+
+# Convertimos a tensor
+nueva_casa_tensor = torch.tensor(nueva_casa_scaled, dtype=torch.float32)
+
+# Predicción
+modelo.eval()
+with torch.no_grad():
+    prediccion = modelo(nueva_casa_tensor)
+
+# Regresar a escala real
+precio_real = scaler_y.inverse_transform(prediccion.numpy())
+
+print(f"\nPrecio estimado de la casa: {precio_real[0][0]:.2f}")
+
 
 """# 11. Gráfica
 plt.figure(figsize=(8,6))
@@ -113,10 +140,10 @@ plt.plot(
     color="red",
     linewidth=2
 )
-
 plt.xlabel("Precio real")
 plt.ylabel("Precio predicho")
-plt.title("Comparación real vs predicho (PyTorch)")
+plt.title("Comparación real vs predicho PyTorch")
 plt.grid(True)
-
+plt.savefig("grafica_real_vs_predicho2.png")
+print("Gráfica guardada como 'grafica_real_vs_predicho.png'")
 plt.show()"""
